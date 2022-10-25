@@ -1,0 +1,25 @@
+GET http://localhost:3500/users
+
+###
+GET http://localhost:3500/users/6357e25bc1726d0979f3b7ce
+
+###
+POST http://localhost:3500/users/user
+Content-Type: application/json
+
+{
+    "name": "Jayden JTJ",
+    "subscribebToChannel": "CRTV 4 news"
+}
+
+###
+DELETE http://localhost:3500/users/6357e25bc1726d0979f3b7ce
+
+###
+
+PATCH http://localhost:3500/users/6357e2c1c1726d0979f3b7d1
+Content-Type: application/json
+
+{
+    "name": "Dylan JTJJJ"
+}
