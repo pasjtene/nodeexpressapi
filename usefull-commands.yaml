@@ -1,0 +1,9 @@
+# mongo db was install be brew and listening as a service
+https://www.mongodb.com/docs/v5.0/reference/mongo-shell/
+to connect to the db:
+mongosh
+- show dbs
+- use userdb
+- show collections # cartitems is listed
+- db.cartitems.find()  # show all from cartitems collection
+- userdb> db.cartitems.deleteMany({})

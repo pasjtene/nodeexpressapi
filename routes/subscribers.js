@@ -1,6 +1,8 @@
 const express = require('express')
 const Subscriber = require('../model/user')
+const Cartitems = require('../model/cart')
 const router = express.Router()
+const mongoose = require('mongoose')
 
 const subscriberService = require('../subscriberService')
 
@@ -52,6 +54,89 @@ router.post("/user", async (req, res)=>{
    
 
 })
+
+
+router.post("/cartitems", async (req, res)=>{
+    console.log("The req", req.body)
+   // console.log(req.body)
+    //res.send(req.body)
+
+    const cartitems =  Cartitems.findOne({userid: req.body.userid}, function (err, cartitems) {
+        
+        if(cartitems) {
+           
+             const filter = { userid: req.body.userid };
+             
+            Cartitems.updateOne(filter,req.body)
+                .then(function (success) {
+                    console.log ("Cart items updated");
+                res.json();
+                    })
+                .catch(function (error) {
+                res.status(404).send(err);
+                });
+
+        } else {
+    
+            const cartitems = new Cartitems(req.body)
+        
+            try {
+                const newCart =  cartitems.save()
+                //res.status(201).json({message: cartitems})
+        
+            }catch(err) {
+                //res.status(400).json({message: err.message})
+                console.log("An err occured", err)
+            }
+    
+        }
+
+        return cartitems;
+    });
+
+})
+
+
+router.get("/cartitems/:userid", async (req, res)=>{
+    console.log("The req user id", req.params.userid)
+   // console.log(req.body)
+    //res.send(req.body)
+
+    const cartitems =  Cartitems.findOne({userid: req.params.userid}, function (err, cartitems) {
+        
+        if(cartitems) {
+           
+            //return cartitems;
+            return res.status(200).json(cartitems)
+
+        } else {
+
+            const initialState = {
+                userid: "6357e2c1c1726d0979f3b7d1",
+                itemsList: [],
+                totalQuantity: 0,
+                showCart: false,
+                productList:[],
+                totalPrice: 0,
+                isItemAdded:0,
+                changed:false
+            }
+    
+            //const cartitems = new Cartitems(req.body)
+            return res.status(200).json(initialState)
+           //return initialState;
+    
+        }
+
+       
+
+       // return cartitems;
+    });
+
+})
+
+
+
 
 //Update one, patch (only the supplied value), put (All values)
 router.patch("/:id",subscriberService.getSubscriber,async (req, res)=>{
